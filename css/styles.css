@@ -1,0 +1,388 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* Screen Management */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Typography */
+.title {
+    font-size: 4rem;
+    font-weight: bold;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #4ecdc4, #45b7aa);
+    color: white;
+    box-shadow: 0 4px 15px rgba(78,205,196,0.3);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78,205,196,0.4);
+}
+
+.btn-back {
+    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.btn-pause {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+}
+
+/* Difficulty Buttons */
+.btn-easy { background: #2ecc71; }
+.btn-medium { background: #f39c12; }
+.btn-hard { background: #e74c3c; }
+.btn-expert { background: #9b59b6; }
+.btn-godly { background: #34495e; }
+.btn-impossible { background: #000; }
+
+/* Menu Layout */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 2rem;
+}
+
+.player-stats {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+/* Map Selection */
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+}
+
+.map-card {
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.difficulty-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.difficulty-buttons .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Game Screen */
+#game-screen {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+}
+
+#game-ui {
+    width: 200px;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.game-stats {
+    margin-bottom: 20px;
+}
+
+.game-stats div {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.unit-selection h4 {
+    margin-bottom: 10px;
+}
+
+#unit-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.unit-btn {
+    padding: 8px;
+    font-size: 12px;
+    background: rgba(78,205,196,0.8);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.unit-btn:hover {
+    background: rgba(78,205,196,1);
+}
+
+.unit-btn:disabled {
+    background: rgba(150,150,150,0.5);
+    cursor: not-allowed;
+}
+
+#game-canvas {
+    background: #2c3e50;
+    border: 2px solid #34495e;
+    cursor: crosshair;
+}
+
+/* Shop Screen */
+.shop-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.roll-section {
+    text-align: center;
+}
+
+.roll-result {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rates {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.rate-list div {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Inventory Screen */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    max-width: 800px;
+}
+
+.unit-card {
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.unit-card:hover {
+    transform: scale(1.05);
+}
+
+.unit-card.selected {
+    border-color: #4ecdc4;
+    box-shadow: 0 0 15px rgba(78,205,196,0.5);
+}
+
+.unit-card h4 {
+    margin-bottom: 10px;
+}
+
+.unit-stats {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.unit-rarity {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.rarity-common { color: #bdc3c7; }
+.rarity-uncommon { color: #27ae60; }
+.rarity-rare { color: #3498db; }
+.rarity-epic { color: #9b59b6; }
+.rarity-legendary { color: #f39c12; }
+.rarity-mythical { color: #e74c3c; }
+
+/* Traits Screen */
+.traits-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.selected-unit {
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 300px;
+}
+
+.trait-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.trait-rates {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Game Over Screen */
+#game-over-stats {
+    background: rgba(0,0,0,0.4);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+#game-over-stats div {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .map-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .shop-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .inventory-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    #game-ui {
+        width: 150px;
+    }
+    
+    #game-canvas {
+        width: calc(100vw - 150px);
+    }
+}
+
+@media (max-width: 480px) {
+    .map-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
