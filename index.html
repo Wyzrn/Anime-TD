@@ -3,203 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime TD</title>
+    <title>Anime TD - Tower Defense Game</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="game-container">
-        <!-- Splash Screen -->
-        <div id="splash-screen" class="screen">
-            <h1 class="title">Anime TD</h1>
-            <button id="start-btn" class="btn btn-primary">Play</button>
-        </div>
+    <div id="splash-screen" class="screen">
+        <h1>Anime TD</h1>
+        <button id="start-btn" class="btn btn-primary">Start</button>
+    </div>
 
-        <!-- Main Menu -->
-        <div id="main-menu" class="screen hidden">
-            <h2>Main Menu</h2>
-            <div class="menu-buttons">
-                <button id="play-btn" class="btn btn-primary">Play</button>
-                <button id="shop-btn" class="btn btn-secondary">Shop</button>
-                <button id="inventory-btn" class="btn btn-secondary">Inventory</button>
-                <button id="traits-btn" class="btn btn-secondary">Traits</button>
-            </div>
-            <div class="player-stats">
-                <div>Level: <span id="player-level">1</span></div>
-                <div>XP: <span id="player-xp">0</span>/<span id="player-max-xp">1000</span></div>
-                <div>Yen: <span id="player-yen">0</span></div>
-                <div>Trait Chips: <span id="trait-chips">0</span></div>
-                <div>Stat Rerolls: <span id="stat-rerolls">0</span></div>
-            </div>
-        </div>
-
-        <!-- Map Selection -->
-        <div id="map-selection" class="screen hidden">
-            <h2>Select Map</h2>
-            <div class="map-grid">
-                <div class="map-card" data-map="dragonball">
-                    <h3>Dragon Ball Arena</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-                <div class="map-card" data-map="naruto">
-                    <h3>Hidden Leaf Village</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-                <div class="map-card" data-map="bleach">
-                    <h3>Soul Society</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-                <div class="map-card" data-map="onepiece">
-                    <h3>Grand Line</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-                <div class="map-card" data-map="jojo">
-                    <h3>Bizarre Town</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-                <div class="map-card" data-map="aot">
-                    <h3>Wall Maria</h3>
-                    <div class="difficulty-buttons">
-                        <button class="btn btn-easy" data-difficulty="easy">Easy</button>
-                        <button class="btn btn-medium" data-difficulty="medium">Medium</button>
-                        <button class="btn btn-hard" data-difficulty="hard">Hard</button>
-                        <button class="btn btn-expert" data-difficulty="expert">Expert</button>
-                        <button class="btn btn-godly" data-difficulty="godly">Godly</button>
-                        <button class="btn btn-impossible" data-difficulty="impossible">Impossible</button>
-                    </div>
-                </div>
-            </div>
-            <button id="back-to-menu" class="btn btn-back">Back</button>
-        </div>
-
-        <!-- Game Screen -->
-        <div id="game-screen" class="screen hidden">
-            <div id="game-ui">
-                <div class="game-stats">
-                    <div>Wave: <span id="current-wave">1</span></div>
-                    <div>Lives: <span id="lives">20</span></div>
-                    <div>Yen: <span id="game-yen">0</span></div>
-                </div>
-                <div class="unit-selection">
-                    <h4>Your Units</h4>
-                    <div id="unit-buttons"></div>
-                </div>
-            </div>
-            <canvas id="game-canvas" width="800" height="600"></canvas>
-            <button id="pause-btn" class="btn btn-pause">Pause</button>
-            <button id="exit-game" class="btn btn-back">Exit</button>
-        </div>
-
-        <!-- Shop Screen -->
-        <div id="shop-screen" class="screen hidden">
-            <h2>Shop</h2>
-            <div class="shop-content">
-                <div class="roll-section">
-                    <h3>Unit Gacha (500 Yen per roll)</h3>
-                    <button id="roll-btn" class="btn btn-primary">Roll for Unit</button>
-                    <div id="roll-result" class="roll-result"></div>
-                </div>
-                <div class="rates">
-                    <h4>Drop Rates:</h4>
-                    <div class="rate-list">
-                        <div>Common: 60%</div>
-                        <div>Uncommon: 25%</div>
-                        <div>Rare: 15%</div>
-                        <div>Epic: 5%</div>
-                        <div>Legendary: 1%</div>
-                        <div>Mythical: 0.01%</div>
-                    </div>
-                </div>
-            </div>
-            <button id="back-from-shop" class="btn btn-back">Back</button>
-        </div>
-
-        <!-- Inventory Screen -->
-        <div id="inventory-screen" class="screen hidden">
-            <h2>Inventory</h2>
-            <div id="inventory-grid" class="inventory-grid"></div>
-            <button id="back-from-inventory" class="btn btn-back">Back</button>
-        </div>
-
-        <!-- Traits Screen -->
-        <div id="traits-screen" class="screen hidden">
-            <h2>Traits</h2>
-            <div class="traits-content">
-                <div id="selected-unit" class="selected-unit">
-                    <h3>Select a unit from inventory first</h3>
-                </div>
-                <div class="trait-buttons">
-                    <button id="apply-trait-btn" class="btn btn-primary">Apply Random Trait (1 Chip)</button>
-                    <button id="reroll-stats-btn" class="btn btn-secondary">Reroll Stats (1 Reroll)</button>
-                </div>
-                <div class="trait-rates">
-                    <h4>Trait Rates:</h4>
-                    <div class="rate-list">
-                        <div>Speedy/Powerful/Distance I-III: 20%/18%/15%</div>
-                        <div>Rage/Greed/Sniper: 5%</div>
-                        <div>Bloodthirsty/Poisoned/Wrecking Ball: 1%</div>
-                        <div>Godly: 0.1%</div>
-                    </div>
-                </div>
-            </div>
-            <button id="back-from-traits" class="btn btn-back">Back</button>
-        </div>
-
-        <!-- Game Over Screen -->
-        <div id="game-over" class="screen hidden">
-            <h2>Game Over!</h2>
-            <div id="game-over-stats">
-                <div>Wave Reached: <span id="final-wave">0</span></div>
-                <div>Enemies Defeated: <span id="enemies-defeated">0</span></div>
-                <div>Yen Earned: <span id="yen-earned">0</span></div>
-                <div>XP Gained: <span id="xp-gained">0</span></div>
-            </div>
-            <button id="continue-btn" class="btn btn-primary">Continue</button>
+    <div id="main-menu" class="screen hidden">
+        <h1>Main Menu</h1>
+        <button id="play-btn" class="btn btn-primary">Play</button>
+        <button id="shop-btn" class="btn btn-primary">Shop</button>
+        <button id="inventory-btn" class="btn btn-primary">Inventory</button>
+        <button id="traits-btn" class="btn btn-primary">Traits</button>
+        <div>
+            <p>Player Level: <span id="player-level">1</span></p>
+            <p>XP: <span id="player-xp">0</span>/<span id="player-max-xp">100</span></p>
+            <p>Yen: <span id="player-yen">0</span></p>
+            <p>Trait Chips: <span id="trait-chips">0</span></p>
+            <p>Stat Rerolls: <span id="stat-rerolls">0</span></p>
         </div>
     </div>
 
-    <!-- JavaScript Files -->
+    <div id="map-selection" class="screen hidden">
+        <h1>Select Map</h1>
+        <div class="map-card" data-map="city">
+            <h2>City</h2>
+            <button data-difficulty="easy">Easy</button>
+            <button data-difficulty="normal">Normal</button>
+            <button data-difficulty="hard">Hard</button>
+        </div>
+        <button id="back-to-menu" class="btn btn-back">Back</button>
+    </div>
+
+    <div id="game-screen" class="screen hidden">
+        <h1>Anime TD - Game</h1>
+        <div>
+            <p>Wave: <span id="current-wave">1</span></p>
+            <p>Lives: <span id="lives">10</span></p>
+            <p>Yen: <span id="game-yen">0</span></p>
+        </div>
+        <canvas id="game-canvas"></canvas>
+        <div id="unit-buttons"></div>
+        <button id="pause-btn" class="btn btn-secondary">Pause</button>
+        <button id="exit-game" class="btn btn-back">Exit</button>
+    </div>
+
+    <div id="game-over" class="screen hidden">
+        <h1>Game Over</h1>
+        <p>Final Wave: <span id="final-wave">0</span></p>
+        <p>Enemies Defeated: <span id="enemies-defeated">0</span></p>
+        <p>Yen Earned: <span id="yen-earned">0</span></p>
+        <p>XP Gained: <span id="xp-gained">0</span></p>
+        <button id="continue-btn" class="btn btn-primary">Continue</button>
+    </div>
+
+    <div id="shop-screen" class="screen hidden">
+        <h1>Shop</h1>
+        <button id="buy-unit-btn" class="btn btn-primary">Buy Unit</button>
+        <button id="back-to-menu" class="btn btn-back">Back</button>
+    </div>
+
+    <div id="inventory-screen" class="screen hidden">
+        <h1>Inventory</h1>
+        <button id="back-to-menu" class="btn btn-back">Back</button>
+    </div>
+
+    <div id="traits-screen" class="screen hidden">
+        <h1>Traits</h1>
+        <button id="back-to-menu" class="btn btn-back">Back</button>
+    </div>
+
     <script src="js/utils.js"></script>
-    <script src="js/gameState.js"></script>
     <script src="js/units.js"></script>
+    <script src="js/gameState.js"></script>
     <script src="js/enemies.js"></script>
     <script src="js/maps.js"></script>
     <script src="js/shop.js"></script>
     <script src="js/traits.js"></script>
+    <script src="js/inventory.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>

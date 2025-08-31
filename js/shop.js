@@ -319,4 +319,25 @@ class Inventory {
 
         return stats;
     }
+
+    static init() {
+        this.setupEventListeners();
+        console.log('Shop initialized');
+    }
+
+    static setupEventListeners() {
+        const buyUnitBtn = document.getElementById('buy-unit-btn');
+        if (!buyUnitBtn) {
+            console.error('Shop.setupEventListeners: buy-unit-btn not found');
+            return;
+        }
+        buyUnitBtn.addEventListener('click', () => {
+            console.log('Buy unit clicked');
+            // Placeholder: Implement unit purchase logic
+        });
+    }
+
+    static updateDisplay() {
+        console.log('Shop UI updated');
+    }
 }

@@ -1,5 +1,5 @@
 // Unit definitions and logic
-class Units {
+class Unit {
     static unitTemplates = {
         kaneki: {
             name: 'Dark Ghoul',
@@ -137,7 +137,10 @@ class Units {
 
     static createUnit(templateName, rarity = null) {
         const template = this.unitTemplates[templateName];
-        if (!template) return null;
+        if (!template) {
+            console.error(`Unit template not found: ${templateName}`);
+            return null;
+        }
 
         const unit = {
             id: Utils.getRandomInt(1000, 9999) + Date.now(),
@@ -148,22 +151,12 @@ class Units {
             cost: template.cost,
             isSupport: template.isSupport || false,
             moneyGeneration: template.moneyGeneration || 0,
-            
-            // Stats (randomized within rarity bounds)
             stats: this.generateStats(template.baseStats, rarity || template.rarity),
-            
-            // Abilities
             abilities: Utils.deepClone(template.abilities),
-            
-            // Traits
             traits: [],
-            
-            // Combat properties
             lastAttack: 0,
             target: null,
             animationFrame: 0,
-            
-            // Methods
             update: this.updateUnit.bind(null),
             render: this.renderUnit.bind(null),
             attack: this.attackUnit.bind(null),
@@ -186,7 +179,7 @@ class Units {
         };
 
         const multiplier = rarityMultipliers[rarity] || rarityMultipliers.common;
-        
+
         return {
             power: Math.max(0, Math.floor(baseStats.power * Utils.getRandomFloat(multiplier.min, multiplier.max))),
             range: Math.max(0, Math.floor(baseStats.range * Utils.getRandomFloat(multiplier.min, multiplier.max))),
@@ -198,35 +191,29 @@ class Units {
         if (!unit.placed) return;
 
         const now = Date.now();
-        
+
         if (unit.isSupport && unit.moneyGeneration > 0) {
-            // Generate money every second
             if (now - unit.lastAttack > 1000) {
                 let moneyAmount = unit.moneyGeneration;
-                
-                // Apply money generation traits
                 unit.traits.forEach(trait => {
                     if (trait === 'greed') moneyAmount *= 2;
                 });
-                
-                gameState.gainYen(moneyAmount);
+                gameState.gainYen(moneyAmount); // Uses global gameState (safe since loaded)
                 unit.lastAttack = now;
             }
-            return;
+ return;
         }
 
-        // Find target if none or current target is dead
         if (!unit.target || unit.target.health <= 0 || !enemies.includes(unit.target)) {
             unit.target = unit.findTarget(enemies);
         }
 
-        // Attack if target is in range and cooldown is ready
         if (unit.target) {
             const distance = Utils.calculateDistance(unit.x, unit.y, unit.target.x, unit.target.y);
-            const range = unit.stats.range * 30; // Convert to pixels
-            
+            const range = unit.stats.range * 30;
+
             if (distance <= range) {
-                const attackSpeed = 1000 / Math.max(1, unit.stats.speed); // Speed affects attack rate
+                const attackSpeed = 1000 / Math.max(1, unit.stats.speed);
                 if (now - unit.lastAttack > attackSpeed) {
                     unit.attack(unit.target);
                     unit.lastAttack = now;
@@ -234,7 +221,6 @@ class Units {
             }
         }
 
-        // Update animation frame
         unit.animationFrame = (unit.animationFrame + 1) % 60;
     }
 
@@ -244,7 +230,7 @@ class Units {
         const range = unit.stats.range * 30;
 
         enemies.forEach(enemy => {
-            const distance = Utils.calculateDistance(unit.x, unit.y, enemy.x, enemy.y);
+            const distance = Utils.calculateDistance(unit.x, unit.y, enemy.x, unit.y);
             if (distance <= range && distance < closestDistance) {
                 closestDistance = distance;
                 closestEnemy = enemy;
@@ -258,8 +244,7 @@ class Units {
         if (!target || target.health <= 0) return;
 
         let damage = unit.stats.power;
-        
-        // Apply trait bonuses
+
         unit.traits.forEach(trait => {
             switch (trait) {
                 case 'powerful_1': damage *= 1.1; break;
@@ -272,7 +257,6 @@ class Units {
             }
         });
 
-        // Apply ability bonuses based on current ability level
         const currentAbility = unit.abilities[Math.min(3, Math.floor(unit.animationFrame / 15))];
         if (currentAbility) {
             damage *= (1 + currentAbility.level * 0.2);
@@ -280,13 +264,12 @@ class Units {
 
         target.takeDamage(Math.floor(damage));
 
-        // Apply special effects
         unit.traits.forEach(trait => {
             if (trait === 'bloodthirsty') {
-                target.applyEffect('bleed', 3000); // 3 second bleed
+                target.applyEffect('bleed', 3000);
             }
             if (trait === 'poisoned') {
-                target.applyEffect('poison', 5000); // 5 second poison
+                target.applyEffect('poison', 5000);
             }
         });
 
@@ -296,24 +279,20 @@ class Units {
     static renderUnit(unit, ctx) {
         if (!unit.placed) return;
 
-        // Unit body (circle)
         ctx.fillStyle = Utils.getRarityColor(unit.rarity);
         ctx.beginPath();
         ctx.arc(unit.x, unit.y, 15, 0, 2 * Math.PI);
         ctx.fill();
 
-        // Unit border
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Unit name (abbreviated)
         ctx.fillStyle = '#fff';
         ctx.font = '10px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(unit.name.substring(0, 3).toUpperCase(), unit.x, unit.y + 3);
 
-        // Attack range (when selected or attacking)
         if (unit.target || unit === gameState.selectedUnit) {
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
             ctx.lineWidth = 1;
@@ -324,10 +303,9 @@ class Units {
             ctx.setLineDash([]);
         }
 
-        // Attack line to target
         if (unit.target && !unit.isSupport) {
             const now = Date.now();
-            if (now - unit.lastAttack < 200) { // Show attack line for 200ms
+            if (now - unit.lastAttack < 200) {
                 ctx.strokeStyle = 'rgba(255, 100, 100, 0.8)';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -337,7 +315,6 @@ class Units {
             }
         }
 
-        // Money generation indicator for support units
         if (unit.isSupport) {
             ctx.fillStyle = '#f1c40f';
             ctx.font = '12px Arial';
@@ -347,22 +324,21 @@ class Units {
 
     static applyTrait(unit, traitName) {
         if (unit.traits.includes(traitName)) return false;
-        
-        // Check for godly trait exclusivity
+
         if (traitName === 'godly') {
-            unit.traits = ['godly']; // Replace all traits with godly
-            unit.cost *= 3; // Triple the cost
+            unit.traits = ['godly'];
+            unit.cost *= 3;
         } else if (!unit.traits.includes('godly')) {
             unit.traits.push(traitName);
         }
-        
+
         return true;
     }
 
     static rerollStats(unit, templateName) {
         const template = this.unitTemplates[templateName];
         if (!template) return false;
-        
+
         unit.stats = this.generateStats(template.baseStats, unit.rarity);
         return true;
     }
@@ -374,20 +350,20 @@ class Units {
             rare: ['zoro'],
             epic: ['ichigo', 'jotaro', 'eren'],
             legendary: ['goku', 'luffy', 'naruto', 'vegeta'],
-            mythical: ['goku', 'luffy', 'naruto'] // Mythical can roll legendary units with better stats
+            mythical: ['goku', 'luffy', 'naruto']
         };
-        
+
         return unitsByRarity[rarity] || [];
     }
 
     static rollRandomUnit() {
         const rarity = Utils.rollForRarity();
         const availableUnits = this.getUnitsByRarity(rarity);
-        
+
         if (availableUnits.length === 0) {
-            return this.createUnit('kaneki', 'common'); // Fallback
+            return this.createUnit('kaneki', 'common');
         }
-        
+
         const selectedTemplate = Utils.getRandomElement(availableUnits);
         return this.createUnit(selectedTemplate, rarity);
     }
